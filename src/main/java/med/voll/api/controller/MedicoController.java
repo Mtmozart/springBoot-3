@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import med.voll.api.medico.DadosCadastroMedico;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 public class MedicoController {
 
     @PostMapping
-    public void cadastrarMedico(@RequestBody String json){
-        System.out.println(json);
+    public void cadastrarMedico(@RequestBody DadosCadastroMedico dados){
+        System.out.println(dados);
     }
 }
