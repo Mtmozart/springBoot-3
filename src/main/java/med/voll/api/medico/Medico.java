@@ -24,8 +24,10 @@ public class Medico {
     //embedded -> ficam em classes separadas mas a classe endereço faz parte da tabela de medivo -> Embeddable na outra class
     @Embedded
     private Endereco endereco;
+    private boolean ativo;
 
     public Medico (DadosCadastroMedico dados){
+        this.ativo = true;
         this.nome = dados.nome();
         this.email = dados.email();
         this.telefone = dados.telefone();
@@ -46,5 +48,9 @@ public class Medico {
             this.endereco.atualizarInformacoes(dados.endereco());
         }
 
+    }
+
+    public void excluir(Long id) {
+        this.ativo = false;
     }
 }

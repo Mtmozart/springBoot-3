@@ -1,17 +1,13 @@
 package med.voll.api.controller;
 
 import jakarta.validation.Valid;
-import med.voll.api.endereco.Endereco;
 import med.voll.api.medico.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("medicos")
@@ -27,7 +23,7 @@ public class MedicoController {
 
     @GetMapping
     public Page<DadosLitagemMedico> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-        return repository.findAll(paginacao).map(DadosLitagemMedico::new);
+        return repository.findAllByAtivoTrue(paginacao).map(DadosLitagemMedico::new);
     }
 
     @PutMapping
@@ -37,9 +33,18 @@ public class MedicoController {
         medico.atualizarInformacoes(dados);
     }
 
+//    @DeleteMapping("/{id}")
+//    @Transactional
+//    public void deletaMedico(@PathVariable Long id) {
+//        repository.deleteById(id);
+//    }
     @DeleteMapping("/{id}")
     @Transactional
-    public void deletaMedico(@PathVariable Long id){
-    repository.deleteById(id);
+    public void deletaMedico(@PathVariable Long id) {
+        var medico = repository.getReferenceById(id);
+        medico.excluir(id);
     }
+
+
+
 }
