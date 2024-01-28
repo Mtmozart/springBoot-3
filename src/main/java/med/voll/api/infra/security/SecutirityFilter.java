@@ -3,7 +3,7 @@ package med.voll.api.infra.security;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.web.header.Header;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -12,11 +12,14 @@ import java.io.IOException;
 @Component
 public class SecutirityFilter extends OncePerRequestFilter {
 
+    @Autowired
+    private TokenService tokenService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var tokenJWT  = recuperarToken(request);
+        var subject = tokenService.getSubject(tokenJWT);
 
-        System.out.println(tokenJWT);
         //chamando próximo filtro
         filterChain.doFilter(request, response);
     }
@@ -28,6 +31,8 @@ public class SecutirityFilter extends OncePerRequestFilter {
         }
         return authorizationHeader.replace("Bearer ", "");
     }
+
+
 
 
 }
