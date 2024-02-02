@@ -1,4 +1,4 @@
-package med.voll.api.domain.consulta.validations;
+package med.voll.api.domain.consulta.validations.validationsAgendamentoConsulta;
 
 
 import med.voll.api.domain.consulta.ConsultaRepository;
@@ -13,7 +13,7 @@ public class ValidadorMedicoComOutraConsultaNoMesmoHorario  implements Validador
     private ConsultaRepository consultaRepository;
 
     public void validar(DadosAgendamentosConsulta dados){
-      var medicoPossuiOutraConsultaNoMesmoHorario = consultaRepository.existsByMedicoIdAndData(dados.idMedico(), dados.data());
+      var medicoPossuiOutraConsultaNoMesmoHorario = consultaRepository.existsByMedicoIdAndDataAndMotivoCancelamentoIsNull(dados.idMedico(), dados.data());
         if (medicoPossuiOutraConsultaNoMesmoHorario){
             throw new ValidacaoException("Médico indisponivél.");
         }

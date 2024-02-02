@@ -1,6 +1,7 @@
 package med.voll.api.domain.consulta;
 
-import med.voll.api.domain.consulta.validations.ValidadorAgendamentoDeConsulta;
+import med.voll.api.domain.consulta.validations.validationsAgendamentoConsulta.ValidadorAgendamentoDeConsulta;
+import med.voll.api.domain.consulta.validations.validationsCancelamentoConsulta.ValidadorCancelamentoDeConsulta;
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.PacienteRepository;
@@ -20,6 +21,8 @@ public class AgendaDeConsultas {
     //esquema para fazer um lista de várias items de uma interface
     @Autowired
     private List<ValidadorAgendamentoDeConsulta> validadores;
+    @Autowired
+    List<ValidadorCancelamentoDeConsulta> validadoresCancelamento;
 
     public DadosDetalhamentoConsulta agendar(DadosAgendamentosConsulta dados){
         if (dados.idMedico() != null && !pacienteRepository.existsById(dados.idPaciente())){
@@ -56,12 +59,16 @@ public class AgendaDeConsultas {
         return medicoRepository.escolherMedicoAleatorioLivreNaData(dados.especialidade(), dados.data());
     }
 
-    public void cancelar(DadosCancelamentoConsulta dados) {
+    public DadosCancelamentoConsulta cancelar(DadosCancelamentoConsulta dados) {
+
         if (!consultaRepository.existsById(dados.idConsulta())) {
             throw new ValidacaoException("Id da consulta informado não existe!");
         }
+        validadoresCancelamento.forEach(v -> v.validar(dados));
 
         var consulta = consultaRepository.getReferenceById(dados.idConsulta());
         consulta.cancelar(dados.motivo());
+
+        return new DadosCancelamentoConsulta(consulta.getId(), consulta.getMotivoCancelamento());
     }
 }
