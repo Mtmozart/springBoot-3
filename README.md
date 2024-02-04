@@ -2,7 +2,7 @@
 
 Curso de springboot completo, sendo uma API criada somente com ele.
 
-| :placard: Vitrine.Dev |     |
+| :placard: Vitrine.Dev |  Sprin-boot-3-api   |
 | -------------  | --- |
 | :sparkles: Nome        | **API Spring**
 | :label: Tecnologias | java, spring security, spring docs, spring boot, jsonWebToken, JPA
