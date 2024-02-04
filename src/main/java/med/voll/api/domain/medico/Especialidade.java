@@ -16,7 +16,7 @@ public enum Especialidade {
     @JsonCreator
     public static Especialidade fromString(String text){
         for(Especialidade especialidade : Especialidade.values()){
-            if(especialidade.especiliadeUtf8.equals(text)){
+            if(especialidade.especiliadeUtf8.equalsIgnoreCase(text)){
                 return especialidade;
             }
         }
